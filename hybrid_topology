@@ -1,0 +1,107 @@
+clc;
+clear;
+close;
+
+// -----------------------------
+// HYBRID NETWORK TOPOLOGY
+// Star + Ring + Tree (25 Nodes)
+// -----------------------------
+
+n = 25;
+
+// Edge list
+edges = [
+    // Star topology (1–8)
+    1 2; 1 3; 1 4; 1 5; 1 6; 1 7; 1 8;
+
+    // Ring topology (9–16)
+    9 10; 10 11; 11 12; 12 13; 13 14; 14 15; 15 16; 16 9;
+
+    // Tree topology (17–25)
+    17 18; 17 19;
+    18 20; 18 21;
+    19 22; 19 23;
+    21 24; 21 25;
+
+    // Hybrid interconnections
+    8 9;
+    16 17
+];
+
+// Random coordinates for nodes
+coords = rand(2, n);
+
+// Create figure
+scf(1);
+clf();
+a = gca();
+a.data_bounds = [0 0; 1.2 1.2];
+a.box = "on";
+a.title.text = "Hybrid Network Topology (Star + Ring + Tree)";
+
+// Draw edges
+for k = 1:size(edges,1)
+    i = edges(k,1);
+    j = edges(k,2);
+
+    xpoly([coords(1,i) coords(1,j)], [coords(2,i) coords(2,j)]);
+    e = gce();
+
+    if (i <= 8 & j <= 8) then
+        e.foreground = 2;      // Star edges
+    elseif (i >= 9 & i <= 16) then
+        e.foreground = 3;      // Ring edges
+    elseif (i >= 17) then
+        e.foreground = 4;      // Tree edges
+    else
+        e.foreground = 5;      // Hybrid links
+    end
+
+    // Edge numbering
+    xm = (coords(1,i) + coords(1,j)) / 2;
+    ym = (coords(2,i) + coords(2,j)) / 2;
+    xstring(xm, ym, string(k));
+end
+
+// Draw nodes
+for i = 1:n
+    xfarc(coords(1,i)-0.015, coords(2,i)-0.015, 0.03, 0.03, 0, 360*64);
+    c = gce();
+
+    if i <= 8 then
+        c.foreground = 2;      // Star nodes
+    elseif i <= 16 then
+        c.foreground = 3;      // Ring nodes
+    else
+        c.foreground = 4;      // Tree nodes
+    end
+
+    // Node numbering
+    xstring(coords(1,i)+0.02, coords(2,i)+0.02, string(i));
+end
+
+// Calculate degree of each node
+deg = zeros(1, n);
+for k = 1:size(edges,1)
+    deg(edges(k,1)) = deg(edges(k,1)) + 1;
+    deg(edges(k,2)) = deg(edges(k,2)) + 1;
+end
+
+// Display node degrees
+disp("Node    Number of Edges");
+for i = 1:n
+    disp([i deg(i)]);
+end
+
+// Maximum degree node
+[maxEdges, maxNode] = max(deg);
+disp("Node with maximum edges:");
+disp(maxNode);
+disp("Maximum number of edges:");
+disp(maxEdges);
+
+// Total nodes and edges
+disp("Total number of nodes:");
+disp(n);
+disp("Total number of edges:");
+disp(size(edges,1));
