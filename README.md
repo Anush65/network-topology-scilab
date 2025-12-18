@@ -1,9 +1,9 @@
-\Network Topology Creation using Scilab
+Network Topology Creation using Scilab
 
 This repository contains Scilab programs for creating and analyzing
 network topologies using NARVAL and Scilab graphics.
 
-\Hybrid Topology
+Hybrid Topology
 
 The hybrid topology is created using:
 
@@ -27,13 +27,14 @@ Features implemented:
 
 \- Total node and edge count
 
-\Tools Used
+Tools Used
 
 \- Scilab 6.0
 
 \- NARVAL Toolbox
 
-\Author
+Author
+
 Anush V
 
 
